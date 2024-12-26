@@ -38,6 +38,19 @@ const Home = () => {
   }, [coordinate.lat, coordinate.long]);
   //üstteki konumu sürekli güncellesin diye var
 
+
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+
+  const filteredVenues = venues.filter((venue) =>
+    venue.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+
   return (
     <div>
       <Header
@@ -49,8 +62,8 @@ const Home = () => {
         label="Mekan Ara:"
         type="text"
         isFocused
-        onInputChange={() => null}
-        value={" "}
+        onInputChange={handleSearchInputChange}
+        value={searchTerm}
       />
       <hr />
       <div className="row">
@@ -59,7 +72,7 @@ const Home = () => {
         ) : isLoading ? (
           <p>Mekanlar Yükleniyor...</p>
         ) : (
-          isSuccess && <VenueList venues={venues} />
+          isSuccess && <VenueList venues={filteredVenues} />
         )}
       </div>
     </div>
